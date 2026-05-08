@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+venv/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Data/Uploads
+uploads/
+backend/uploads/
+*.pdf
+
+# Environment/IDE
+.env
+.venv
+.vscode/
+.idea/
+.gemini/
+brain/
+
+# Database
+*.sqlite3
+history.db

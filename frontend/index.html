@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bone Fracture Detection | AI Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-blob"></div>
+    <div class="background-blob-2"></div>
+
+    <nav>
+        <div class="logo">Osteo<span>Scan</span> AI</div>
+        <div class="auth-box" id="auth-status">
+            <span id="user-display">Guest</span>
+            <button onclick="logout()" id="logout-btn" style="display:none;">Logout</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="hero">
+            <h1>Advanced Bone Fracture Detection</h1>
+            <p>High-precision AI analysis for X-ray imagery using Hybrid Deep Learning.</p>
+        </header>
+
+        <section class="upload-section glass">
+            <div class="upload-card">
+                <div class="drop-zone" id="drop-zone">
+                    <div class="icon">📁</div>
+                    <p>Drag & Drop X-ray or <span>Browse</span></p>
+                    <input type="file" id="file-input" hidden accept="image/*">
+                </div>
+                <div id="preview-container" style="display:none;">
+                    <img id="image-preview" src="" alt="Preview">
+                    <div class="model-select" style="margin-bottom: 1rem;">
+                        <span class="label" style="display:block; margin-bottom: 0.5rem; font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">Select Prediction Model</span>
+                        <select id="model-selector" class="glass" style="width: 100%; border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; font-weight: 600;">
+                            <option value="efficientnet">EfficientNetB0 (Primary)</option>
+                            <option value="vgg19">VGG19 (Clinical Fidelity)</option>
+                            <option value="mobilenet">MobileNet V2 (Fast AI)</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" id="analyze-btn">Analyze Image</button>
+                    <button class="btn-secondary" id="reset-btn">Change Image</button>
+                </div>
+            </div>
+
+            <div class="result-card" id="result-card" style="display:none;">
+                <div class="status-badge" id="prediction-status">FRACTURED</div>
+                <div class="confidence-box">
+                    <span class="label">Confidence Score</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="confidence-fill"></div>
+                    </div>
+                    <span class="value" id="confidence-value">98.5%</span>
+                </div>
+                <div class="heatmap-box" id="heatmap-box" style="display:none; margin-top: 1.5rem; border-top: 1px solid var(--glass-border); padding-top: 1rem;">
+                    <span class="label" style="display:block; margin-bottom: 0.5rem; font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">AI Analysis Heatmap (Regions in Red)</span>
+                    <img id="heatmap-image" src="" alt="AI Analysis Overlay" style="width:100%; border-radius: 8px; border: 1px solid rgba(255, 0, 0, 0.3);">
+                </div>
+                <div class="details">
+                    <p id="result-message">Fracture detected in the mid-shaft region. Further clinical evaluation is recommended.</p>
+                    <div class="detail-grid" id="detail-grid" style="display:none; margin-top: 1.5rem; border-top: 1px solid var(--glass-border); padding-top: 1rem;">
+                        <div class="detail-item">
+                            <span class="label">Location</span>
+                            <span class="val" id="detail-location">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Severity</span>
+                            <span class="val" id="detail-severity">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Consult</span>
+                            <span class="val" id="detail-consult">-</span>
+                        </div>
+                    </div>
+                    <button class="btn-secondary" id="download-btn" onclick="downloadReport()" style="margin-top: 1rem; width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: rgba(99, 102, 241, 0.1); border: 1px solid var(--accent); color: var(--accent);">
+                        📄 Download Medical Report
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <h2>Analysis History</h2>
+            <div class="history-grid" id="history-grid">
+                <!-- History items will be injected here -->
+                <p class="empty-msg">No history found. Start by uploading an image.</p>
+            </div>
+        </section>
+
+        <section class="dashboard-section" id="dashboard-section" style="display:none; margin-top: 3rem; margin-bottom: 3rem;">
+            <h2>Analytics Dashboard</h2>
+            <div class="glass" style="padding: 1.5rem; margin-top: 1rem; border-radius: 12px;">
+                <canvas id="analysis-chart" style="max-height: 300px; width: 100%;"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content glass">
+            <h2 id="auth-title">Welcome Back</h2>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <button onclick="login()" id="auth-submit-btn" class="btn-primary">Login</button>
+            </div>
+            <p id="auth-toggle" onclick="toggleAuthMode()" style="color: #6366f1; cursor: pointer; margin-top: 1.5rem; font-size: 0.9rem; text-align: center;">New user? Create an account</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 OsteoScan AI. For research purposes only.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
